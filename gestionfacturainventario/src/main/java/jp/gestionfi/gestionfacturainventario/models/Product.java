@@ -15,22 +15,20 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable= false) // esto hace q la columna en la base de datos no sea nula
+    @Column(nullable = false) // esto hace q la columna en la base de datos no sea nula
     private String sku; // este es el codigo del producto (Podria decirse como el codigo de barra)
 
-    @Column(nullable= false)
+    @Column(nullable = false)
     private String name;
-    
-    @Column(nullable= false)
+
+    @Column(nullable = false, precision = 14, scale = 2)
     private BigDecimal price;
-    
-    @Column(nullable= false)
+
+    @Column(nullable = false)
     private String unit;
 
-    @Column(nullable= false)
+    @Column(nullable = false)
     private Long stock;
-
-    
 
     public Product() {
     }
@@ -42,44 +40,55 @@ public class Product {
         this.unit = unit;
         this.stock = stock;
     }
+
     public Long getId() {
         return id;
     }
+
     public String getSku() {
         return sku;
     }
+
     public void setSku(String sku) {
         this.sku = sku;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public BigDecimal getPrice() {
         return price;
     }
+
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
     public String getUnit() {
         return unit;
     }
+
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
     public Long getStock() {
         return stock;
     }
+
     public void setStock(Long stock) {
         this.stock = stock;
     }
 
-    //aplicando el GRASP experto esto con la idea que solo esta clase comprende.
+    // aplicando el GRASP experto esto con la idea que solo esta clase comprende.
 
-     public void adjustStock(long delta) {
-        long nuevo = (this.stock == null ? 0L : this.stock) + delta; //valida que el Stock no este ni en 0 ni en null
+    public void adjustStock(long delta) {
+        long nuevo = (this.stock == null ? 0L : this.stock) + delta; // valida que el Stock no este ni en 0 ni en null
         if (nuevo < 0) {
             throw new IllegalStateException("Stock insuficiente para SKU: " + sku);
         }
@@ -87,9 +96,11 @@ public class Product {
     }
 
     public boolean decreaseIfAvailable(long quantity) {
-        if (quantity <= 0) return false;
+        if (quantity <= 0)
+            return false;
         long actual = (this.stock == null ? 0L : this.stock);
-        if (actual < quantity) return false;
+        if (actual < quantity)
+            return false;
         this.stock = actual - quantity;
         return true;
     }
